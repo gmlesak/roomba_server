@@ -2,10 +2,8 @@ var dorita980 = require('dorita980');
 var http = require('http');
 var url = require('url');
 
-const ROOMBA_IP = process.env.ROOMBA_IP;
 const BLID = process.env.ROOMBA_BLID;
-const PASSWORD = process.env.ROOMBA_PASSWORD;
-
+const PASSWORD = process.env.ROOMBA_PASSWORD;   // your cloud token
 const HOST = '0.0.0.0';
 const PORT = '6565';
 
@@ -19,25 +17,17 @@ const server = http.createServer(async (req, res) => {
 
     switch (_req.pathname) {
         case "/status":
-            if (!ROOMBA_IP) {
-                res.writeHead(500, { "Content-Type": "application/json" });
-                return res.end(JSON.stringify({ error: "ROOMBA_IP not set" }));
-            }
-
             try {
-                const myRobotViaLocal = new dorita980.Local(BLID, PASSWORD, ROOMBA_IP);
+                const myRobotViaCloud = new dorita980.Cloud(BLID, PASSWORD);
 
-                // Request full state (Tidbyt app requires name, phase, etc.)
-                const state = await myRobotViaLocal.getRobotState();
-
-                myRobotViaLocal.end();
+                const state = await myRobotViaCloud.getRobotState();
 
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(JSON.stringify(state));
             } catch (err) {
-                console.error("Roomba error:", err);
+                console.error("Roomba cloud error:", err);
                 res.writeHead(500, { "Content-Type": "application/json" });
-                res.end(JSON.stringify({ error: "Failed to reach Roomba" }));
+                res.end(JSON.stringify({ error: "Failed to reach Roomba cloud API" }));
             }
             break;
 
@@ -48,5 +38,5 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, HOST, () => {
-    console.log(`Roomba API server running on http://${HOST}:${PORT}`);
+    console.log(`Roomba Cloud API server running on http://${HOST}:${PORT}`);
 });
