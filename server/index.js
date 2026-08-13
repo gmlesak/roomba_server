@@ -2,8 +2,8 @@ var dorita980 = require('dorita980');
 var http = require('http');
 var url = require('url');
 
-const BLID = '_BLID_HERE_';
-const PASSWORD = '_PASSWORD_HERE_';
+const blid = process.env.ROOMBA_BLID;
+const password = process.env.ROOMBA_PASSWORD;
 
 const HOST = 'localhost';
 const PORT = '6565';
