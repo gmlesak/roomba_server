@@ -1,7 +1,8 @@
-FROM node:18-slim
+FROM node:18
 WORKDIR /app
 COPY server/package*.json ./
-RUN npm install && npm install -g dorita980
+## RUN npm install 
+RUN npm install -g dorita980
 COPY server/ .
 EXPOSE 6565
 CMD ["npm", "start"]
