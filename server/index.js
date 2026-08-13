@@ -4,7 +4,7 @@ var url = require('url');
 
 const blid = process.env.ROOMBA_BLID;
 const password = process.env.ROOMBA_PASSWORD;
-const HOST = 'localhost';
+const HOST = '0.0.0.0';
 const PORT = '6565';
 
 const server = http.createServer((req, res) => {
